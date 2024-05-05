@@ -42,6 +42,8 @@ jobs:
       with: 
         gradle-version: 8.7
         distribution: 'wrapper'
+        
+    - name: Build with Gradle except Test
       run: |
         ./gradlew clean build -x test
 
