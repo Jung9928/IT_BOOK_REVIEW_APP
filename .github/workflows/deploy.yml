@@ -38,14 +38,8 @@ jobs:
 
     # 3. Gradle build (Test 제외)
     - name: Build with Gradle
-      uses: gradle/action/setup-gradle@v1
-      with: 
-        gradle-version: 8.7
-        distribution: 'wrapper'
-
-    - name: Build with Gradle except Test
-      run: |
-        ./gradlew clean build -x test
+      uses: gradle/actions/setup-gradle@v3
+      run: ./gradlew clean build -x test
 
     # 4. AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
     - name: Configure AWS credentials
