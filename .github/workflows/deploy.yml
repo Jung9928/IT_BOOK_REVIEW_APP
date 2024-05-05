@@ -32,6 +32,10 @@ jobs:
         distribution: 'adopt'
         java-version: '17'
 
+    # not executable 에러로 권한 부여
+    - name: Run chmod to make gradlew executable
+      run: chmod +x ./gradlew
+
     # 3. Gradle build (Test 제외)
     - name: Build with Gradle
       uses: gradle/gradle-build-action@417ae3ccd767c252f5661f1ace9f835f9654f2b5
