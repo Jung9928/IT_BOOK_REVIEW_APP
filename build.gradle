@@ -42,3 +42,8 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+// build > jar 파일 생성 시, plain jar 파일 생성 방지
+jar {
+    enabled = false
+}
