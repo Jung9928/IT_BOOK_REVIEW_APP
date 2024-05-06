@@ -1,3 +1,6 @@
+server:
+  port: 8081
+
 spring.application.name: IT_BOOK_REVIEW_APP
 
 # Database Configuration
@@ -18,3 +21,5 @@ spring.mvc:
   hidden-method:
     filter:
       enabled: true
+
+
