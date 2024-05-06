@@ -7,7 +7,7 @@ on:
 # 리전, 버킷 명, CodeDeploy 앱 이름, CodeDeploy 배포 그룹 명 기재
 env:
   AWS_REGION: ap-northeast-2
-  S3_BUCKET_NAME: itbookreviewapp
+  S3_BUCKET_NAME: itbookreviewapp-bucket
   CODE_DEPLOY_APPLICATION_NAME: reviewapp
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: reviewapp-deploy
 
