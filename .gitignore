@@ -287,7 +287,3 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
-# application.yml or properties files
-*.yml
-*.yaml
-application.properties
