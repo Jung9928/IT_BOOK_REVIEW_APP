@@ -7,6 +7,7 @@ import com.jung0407.it_book_review_app.model.dto.responseDTO.BookResponseDTO;
 import com.jung0407.it_book_review_app.model.entity.BookEntity;
 import com.jung0407.it_book_review_app.repository.BookRepositoryCustom;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class BookService {
 
@@ -26,8 +28,7 @@ public class BookService {
 
         Page<BookEntity> bookEntities = bookRepositoryCustom.findAllBySearchCondition(pageable, bookSearchConditionDTO);
 
-        for (BookEntity bookEntity : bookEntities) {
-            BookResponseDTO bookResponseDTO = BookResponseDTO.builder()
+        bookEntities.forEach(bookEntity -> bookResponseDTOList.add(BookResponseDTO.builder()
                     .book_id(bookEntity.getBook_id())
                     .isbn(bookEntity.getIsbn())
                     .title(bookEntity.getTitle())
@@ -43,10 +44,7 @@ public class BookService {
                     .modifiedAt(bookEntity.getModifiedAt())
                     .site(bookEntity.getSite())
                     .detailInfoPath(bookEntity.getDetailInfoPath())
-                    .build();
-
-            bookResponseDTOList.add(bookResponseDTO);
-        }
+                    .build()));
 
         BookPaginationDTO bookPaginationDTO = new BookPaginationDTO(
                 (int) bookEntities.getTotalElements()

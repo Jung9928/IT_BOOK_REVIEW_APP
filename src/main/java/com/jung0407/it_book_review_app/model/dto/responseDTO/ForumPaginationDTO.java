@@ -1,4 +1,4 @@
-package com.jung0407.it_book_review_app.model.dto;
+package com.jung0407.it_book_review_app.model.dto.responseDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BookPaginationDTO {
+public class ForumPaginationDTO {
 
     // 페이지 당 보여지는 도서 정보 최대 갯수
     private int pageSize;
@@ -21,7 +21,7 @@ public class BookPaginationDTO {
     int block;
 
     // 총 도서 데이터 수
-    int totalItemCnt;
+    int totalListCnt;
 
     // 총 페이지 수
     int totalPageCnt;
@@ -44,46 +44,45 @@ public class BookPaginationDTO {
     // 인덱스
     int startIndex;
 
-    public BookPaginationDTO(Integer totalItemCnt, Integer page, Integer pageSize, Integer blockSize) {
+    public ForumPaginationDTO(Integer totalListCnt, Integer page, Integer pageSize, Integer blockSize) {
         this.pageSize = pageSize;
 
         // 현재 페이지
         this.page = page;
 
         // 총 게시글 수
-        this.totalItemCnt = totalItemCnt;
+        this.totalListCnt = totalListCnt;
 
         // 총 페이지 수
-//        this.totalPageCnt = (int) Math.ceil(totalItemCnt * 1.0 / this.pageSize);
-        this.totalPageCnt = (int) Math.ceil(totalItemCnt * 1.0 / this.pageSize);
+        totalPageCnt = (int) Math.ceil(totalListCnt * 1.0 / this.pageSize);
 
         // 총 블럭 수
-        this.totalBlockCnt = (int) Math.ceil(totalPageCnt * 1.0 / blockSize);
+        totalBlockCnt = (int) Math.ceil(totalPageCnt * 1.0 / blockSize);
 
         // 현재 블럭
-        this.block = (int) Math.ceil((this.page * 1.0) / blockSize);
+        block = (int) Math.ceil((this.page * 1.0) / blockSize);
 
         // 블럭 시작 페이지
-        this.startPage = ((block - 1) * blockSize + 1);
+        startPage = ((block - 1) * blockSize + 1);
 
-        // 마지막 페이지 블럭
-        this.endPage = startPage + blockSize - 1;
+        // 블럭 마지막 페이지
+        endPage = startPage + blockSize - 1;
 
-        // 마지막 페이지 블럭 validation
+        // 블럭 마지막 페이지 validation
         if (endPage > totalPageCnt) endPage = totalPageCnt;
 
         // 이전 블럭 (클릭 시, 이전 블럭 마지막 페이지)
-        this.prevBlock = (block * blockSize) - blockSize;
+        prevBlock = (block * blockSize) - blockSize;
 
         // 이전 블럭 validation
         if (prevBlock < 1) prevBlock = 1;
 
         // 다음 블럭 (클릭 시, 다음 블럭 첫번째 페이지)
-        this.nextBlock = (block * blockSize + 1);
+        nextBlock = (block * blockSize + 1);
 
         // 다음 블럭 validation
         if (nextBlock > totalPageCnt) nextBlock = totalPageCnt;
 
-        this.startIndex = (this.page - 1) * this.pageSize;
+        startIndex = (this.page - 1) * this.pageSize;
     }
 }

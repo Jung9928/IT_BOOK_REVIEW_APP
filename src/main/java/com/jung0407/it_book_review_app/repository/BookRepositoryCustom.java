@@ -8,11 +8,14 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +25,7 @@ import static com.jung0407.it_book_review_app.model.entity.QBookEntity.bookEntit
 // QueryDSL을 사용하므로 인터페이스가 아닌 클래스를 생성하여 JPAQueryFactory을 통해 구현
 @RequiredArgsConstructor
 @Repository
+@Slf4j
 public class BookRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
@@ -34,18 +38,38 @@ public class BookRepositoryCustom {
                         searchDetailKeywords(bookSearchConditionDTO.getSearchDetailCategory(), bookSearchConditionDTO.getSearchValue())
                 );
 
-        long total = query.stream().count();        // 전체 도서 데이터 카운트 후, 아래에서 조건 처리
+        JPAQuery<Long> queryCount =
+                queryFactory.select(bookEntity.count()).from(bookEntity).where(
+                        searchMainKeywords(bookSearchConditionDTO.getSearchMainCategory()),
+                        searchSubKeywords(bookSearchConditionDTO.getSearchSubCategory()),
+                        searchDetailKeywords(bookSearchConditionDTO.getSearchDetailCategory(), bookSearchConditionDTO.getSearchValue())
+                );
+
+        long total = query.stream().count();        // 전체 도서 데이터 카운트 후, 아래에서 조건 처리에 활용
+
+        log.info("total count : " + total);
+        log.info("pageable.getPageNumber : " + pageable.getPageNumber());
+        log.info("pageable.getPageSize : " + pageable.getPageSize());
+        log.info("pageable.getPageNumber * pageable.getPageSize() : " + (long)(pageable.getPageNumber()) * pageable.getPageSize());
+        log.info("pageable.getPageNumber()-1 * pageable.getPageSize() : " + (long)(pageable.getPageNumber()-1) * pageable.getPageSize());
+        log.info("pageable.getOffset() : " + pageable.getOffset());
 
         List<BookEntity> results = query
                 // 페이지 번호
                 // 프론트에서 맨 처음 로딩 시, 1페이지 값을 전달하므로 getPageNumber에 -1하여 offset 첫 값을 0설정
                 // ex) limit(0, 9) -> limit(9, 18) -> limit(18, 27)
-                .offset((long)(pageable.getPageNumber()-1) * pageable.getPageSize())
+//                .offset((long)(pageable.getPageNumber()-1) * pageable.getPageSize())
+                .offset((long)(pageable.getPageNumber()) * pageable.getPageSize())
                 .limit(pageable.getPageSize())      // 페이지에 표시할 도서 갯수
                 .orderBy(bookEntity.publishDate.desc())
                 .fetch();
 
-        return new PageImpl<>(results, pageable, total);
+        log.info("results size : " + results.stream().count());
+
+//        long total2 = pageable.getOffset() + results.size() + (results.size() == pageable.getPageSize() ? pageable.getPageSize() : 0);
+
+//        return new PageImpl<>(results, pageable, total);
+        return PageableExecutionUtils.getPage(results, pageable, queryCount::fetchOne);
     }
 
     private BooleanExpression searchDetailKeywords(String searchSubCategory, String searchValue) {

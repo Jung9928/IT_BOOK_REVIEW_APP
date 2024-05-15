@@ -22,11 +22,13 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping("/list")
-    public BookPagingResponseDTO<List<BookResponseDTO>> getBookList(@PageableDefault(sort = {"publishDate"}) Pageable pageable, BookSearchConditionDTO bookSearchConditionDTO) {
+    public BookPagingResponseDTO<List<BookResponseDTO>> getBookList(@PageableDefault(size = 9, sort = {"publishDate"}) Pageable pageable, BookSearchConditionDTO bookSearchConditionDTO) {
         log.info("searchMainCategory : " + bookSearchConditionDTO.getSearchMainCategory());
         log.info("searchSubCategory : " + bookSearchConditionDTO.getSearchSubCategory());
         log.info("searchDetailCategory : " + bookSearchConditionDTO.getSearchDetailCategory());
         log.info("searchValue : " + bookSearchConditionDTO.getSearchValue());
+//        log.info("page : " + pageable.getPageNumber());
+//        log.info("page offset : " + pageable.getOffset());
         return bookService.getBookList(pageable, bookSearchConditionDTO);
     }
 }

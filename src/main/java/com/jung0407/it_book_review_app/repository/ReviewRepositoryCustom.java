@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -31,20 +32,23 @@ public class ReviewRepositoryCustom {
                         searchReviewSite(reviewSearchConditionDTO.getReviewSite())
                 );
 
+        JPAQuery<Long> queryCount =
+                queryFactory.select(reviewEntity.count()).from(reviewEntity).where(
+                        searchBookId(reviewSearchConditionDTO.getBookId()),
+//                        searchBookIsbn(reviewSearchConditionDTO.getIsbn()),
+                        searchReviewSite(reviewSearchConditionDTO.getReviewSite())
+                );
+
         long total = query.stream().count();            // 전체 리뷰 데이터 카운트 후, 아래에서 조건 처리
 
         List<ReviewEntity> results = query
-                .where(
-                        searchBookId(reviewSearchConditionDTO.getBookId()),
-//                        searchBookIsbn(reviewSearchConditionDTO.getIsbn()),
-                        searchReviewSite(reviewSearchConditionDTO.getReviewSite()))
-//                .offset(pageable.getOffset())
-                .offset(((long)(pageable.getPageNumber()-1)* pageable.getPageSize()))
+                .offset(((long)(pageable.getPageNumber())* pageable.getPageSize()))
                 .limit(pageable.getPageSize())
                 .orderBy(reviewEntity.reviewDate.desc())
                 .fetch();
 
-        return new PageImpl<>(results, pageable, total);
+//        return new PageImpl<>(results, pageable, total);
+        return PageableExecutionUtils.getPage(results, pageable, queryCount::fetchOne);
     }
 
     private BooleanExpression searchBookId(int id) {

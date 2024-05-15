@@ -23,7 +23,7 @@ public class ReviewController {
 
     @GetMapping("/reviewList")
     public ReviewPagingResponseDTO<List<ReviewResponseDTO>> getReviewList(
-            @PageableDefault(sort = {"reviewDate"}) Pageable pageable,
+            @PageableDefault(size = 5, sort = {"reviewDate"}) Pageable pageable,
             ReviewSearchConditionDTO reviewSearchConditionDTO
     ) {
         log.info("book id : " + reviewSearchConditionDTO.getBookId());
