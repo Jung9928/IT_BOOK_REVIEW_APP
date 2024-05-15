@@ -5,8 +5,6 @@ import com.jung0407.it_book_review_app.model.dto.responseDTO.ForumPaginationDTO;
 import com.jung0407.it_book_review_app.model.dto.responseDTO.ForumPagingResponseDTO;
 import com.jung0407.it_book_review_app.model.dto.responseDTO.ForumResponseDTO;
 import com.jung0407.it_book_review_app.model.entity.ForumEntity;
-import com.jung0407.it_book_review_app.model.vo.ForumVO;
-import com.jung0407.it_book_review_app.model.vo.ReplyVO;
 import com.jung0407.it_book_review_app.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
