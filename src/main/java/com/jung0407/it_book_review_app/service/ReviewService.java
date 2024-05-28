@@ -26,23 +26,6 @@ public class ReviewService {
 
         Page<ReviewEntity> reviewEntities = reviewRepositoryCustom.findAllBySearchCondition(pageable, reviewSearchConditionDTO);
 
-//        for (ReviewEntity reviewEntity : reviewEntities) {
-//            ReviewResponseDTO reviewResponseDTO = ReviewResponseDTO.builder()
-//                    .book_id(reviewEntity.getBookId())
-//                    .isbn(reviewEntity.getIsbn())
-//                    .review_id(reviewEntity.getReview_id())
-//                    .review_title(reviewEntity.getReview_title())
-//                    .review_rating(reviewEntity.getReview_rating())
-//                    .reviewer(reviewEntity.getReviewer())
-//                    .review_date(reviewEntity.getReviewDate())
-//                    .review_content(reviewEntity.getReviewContent())
-//                    .modifiedAt(reviewEntity.getModifiedAt())
-//                    .review_site(reviewEntity.getReviewSite())
-//                    .build();
-//
-//            reviewResponseDTOList.add(reviewResponseDTO);
-//        }
-
         reviewEntities.forEach(reviewEntity -> reviewResponseDTOList.add(ReviewResponseDTO.builder()
                 .book_id(reviewEntity.getBookId())
                 .isbn(reviewEntity.getIsbn())

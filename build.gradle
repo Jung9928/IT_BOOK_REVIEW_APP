@@ -4,8 +4,9 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.4'
 }
 
+// 2024-05-28 변경사항 적용
 group = 'com.jung0407'
-version = '1.0.0'
+version = '1.0.1'
 
 java {
     sourceCompatibility = '17'
@@ -24,6 +25,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'

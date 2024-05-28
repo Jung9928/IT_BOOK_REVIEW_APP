@@ -16,7 +16,9 @@ public class ForumResponseDTO {
 
     private long post_id;
 
-    private String member_id;
+    private String nickName;
+
+    private String password;
 
     private String title;
 
@@ -34,7 +36,8 @@ public class ForumResponseDTO {
     public static ForumResponseDTO entityToMemberDTO(ForumEntity forumEntity) {
         return new ForumResponseDTO(
                 forumEntity.getPostId(),
-                forumEntity.getMember().getMemberId(),
+                forumEntity.getNickName(),
+                forumEntity.getPassword(),
                 forumEntity.getTitle(),
                 forumEntity.getContent().toString(),
                 forumEntity.getViewCount(),

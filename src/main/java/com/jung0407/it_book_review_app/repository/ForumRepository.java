@@ -12,9 +12,10 @@ import java.util.Optional;
 
 public interface ForumRepository extends JpaRepository<ForumEntity, Long> {
 
-    Optional<ForumEntity> findGeneralForumViewCountByPostId(long postId);
+    Optional<ForumEntity> findForumViewCountByPostId(long postId);
 
-    Page<ForumEntity> findGeneralForumEntitiesByMemberId(long id, Pageable pageable);
+    // 내가 작성한 작성글 페이징
+    Page<ForumEntity> findForumEntitiesByNickName(String nickName, Pageable pageable);
 
     @Transactional
     @Modifying

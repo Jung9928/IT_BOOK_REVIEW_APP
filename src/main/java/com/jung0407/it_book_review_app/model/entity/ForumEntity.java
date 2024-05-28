@@ -25,9 +25,11 @@ public class ForumEntity {
     @Column(name = "post_id")
     private Long postId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private MemberEntity member;
+    @Column(name = "nickName", nullable = false)
+    private String nickName;
+
+    @Column(name = "password", nullable = false)
+    private String password;
 
 //    @Size(min = 2, max=40, message = "제목은 2자이상 40자 이하입니다.")
     @Column(name = "title", nullable = false)
@@ -41,7 +43,7 @@ public class ForumEntity {
     @ColumnDefault("0")
     private int viewCount;
 
-    @OneToMany(mappedBy = "postId", orphanRemoval = true)
+    @OneToMany(mappedBy = "forum", orphanRemoval = true)
     private List<CommentEntity> comments = new ArrayList<>();
 
     @Column(name = "reg_at")
@@ -60,11 +62,13 @@ public class ForumEntity {
         this.modifiedAt = Timestamp.from(Instant.now());
     }
 
-    public static ForumEntity getForumEntity(String title, byte[] content, MemberEntity memberId) {
-        ForumEntity entity = new ForumEntity();
-        entity.setTitle(title);
-        entity.setContent(content);
-        entity.setMember(memberId);
-        return entity;
+    public static ForumEntity getForumEntity(String title, byte[] content, String nickName, String password) {
+        ForumEntity forumEntity = new ForumEntity();
+        forumEntity.setTitle(title);
+        forumEntity.setContent(content);
+        forumEntity.setNickName(nickName);
+        forumEntity.setPassword(password);
+
+        return forumEntity;
     }
 }

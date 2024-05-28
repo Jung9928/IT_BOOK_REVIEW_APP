@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "comment")
+@Table(name = "anonymous_comment")
 public class CommentEntity {
 
     @Id
@@ -26,11 +26,13 @@ public class CommentEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
-    private ForumEntity postId;
+    private ForumEntity forum;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private MemberEntity member;
+    @Column(name = "nickname")
+    private String nickName;
+
+    @Column(name = "password")
+    private String password;
 
     @Column(nullable = false)
     @Lob
@@ -62,11 +64,12 @@ public class CommentEntity {
         this.modifiedAt = Timestamp.from(Instant.now());
     }
 
-    public static CommentEntity getCommentEntity(MemberEntity memberId, ForumEntity postId, CommentEntity parentComment, String comment) {
+    public static CommentEntity getCommentEntity(String nickName, String password, ForumEntity postId, CommentEntity parentComment, String comment) {
         CommentEntity entity = new CommentEntity();
 
-        entity.setMember(memberId);
-        entity.setPostId(postId);
+        entity.setNickName(nickName);
+        entity.setPassword(password);
+        entity.setForum(postId);
         entity.setComment(comment);
         entity.setParentComment(parentComment);
         entity.setIsDeleted(CommentDeleteStatus.N);

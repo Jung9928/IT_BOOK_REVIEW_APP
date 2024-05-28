@@ -53,7 +53,7 @@ public class ForumRepositoryCustom {
         }
         else if("author".equals(searchCategory)) {
             if(StringUtils.hasLength(searchValue)) {
-                return forumEntity.member.memberId.contains(searchValue);
+                return forumEntity.nickName.contains(searchValue);
             }
         }
         else if("content".equals(searchCategory)) {
