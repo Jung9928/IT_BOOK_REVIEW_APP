@@ -5,6 +5,7 @@ import com.jung0407.it_book_review_app.model.entity.BookEntity;
 import com.jung0407.it_book_review_app.util.BookMainCategory;
 import com.jung0407.it_book_review_app.util.BookSubCategory;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +32,24 @@ public class BookRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     public Page<BookEntity> findAllBySearchCondition(Pageable pageable, BookSearchConditionDTO bookSearchConditionDTO) {
+
+//        JPAQuery<BookEntity> query =
+//                queryFactory.selectFrom(bookEntity).where(
+//                        searchMainKeywords(bookSearchConditionDTO.getSearchMainCategory()),
+//                        searchSubKeywords(bookSearchConditionDTO.getSearchSubCategory()),
+//                        searchDetailKeywords(bookSearchConditionDTO.getSearchDetailCategory(), bookSearchConditionDTO.getSearchValue())
+//                );
+
         JPAQuery<BookEntity> query =
                 queryFactory.selectFrom(bookEntity).where(
-                        searchMainKeywords(bookSearchConditionDTO.getSearchMainCategory()),
-                        searchSubKeywords(bookSearchConditionDTO.getSearchSubCategory()),
-                        searchDetailKeywords(bookSearchConditionDTO.getSearchDetailCategory(), bookSearchConditionDTO.getSearchValue())
+                        bookEntity.book_id.in(
+                                JPAExpressions
+                                        .select(bookEntity.book_id.min())
+                                        .from(bookEntity)
+                                        .groupBy(bookEntity.isbn))
+                                .and(searchMainKeywords(bookSearchConditionDTO.getSearchMainCategory()))
+                                .and(searchSubKeywords(bookSearchConditionDTO.getSearchSubCategory()))
+                                .and(searchDetailKeywords(bookSearchConditionDTO.getSearchDetailCategory(), bookSearchConditionDTO.getSearchValue()))
                 );
 
         JPAQuery<Long> queryCount =
