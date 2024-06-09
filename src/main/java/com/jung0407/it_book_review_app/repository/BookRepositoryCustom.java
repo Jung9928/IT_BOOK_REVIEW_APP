@@ -33,24 +33,24 @@ public class BookRepositoryCustom {
 
     public Page<BookEntity> findAllBySearchCondition(Pageable pageable, BookSearchConditionDTO bookSearchConditionDTO) {
 
-//        JPAQuery<BookEntity> query =
-//                queryFactory.selectFrom(bookEntity).where(
-//                        searchMainKeywords(bookSearchConditionDTO.getSearchMainCategory()),
-//                        searchSubKeywords(bookSearchConditionDTO.getSearchSubCategory()),
-//                        searchDetailKeywords(bookSearchConditionDTO.getSearchDetailCategory(), bookSearchConditionDTO.getSearchValue())
-//                );
-
         JPAQuery<BookEntity> query =
                 queryFactory.selectFrom(bookEntity).where(
-                        bookEntity.book_id.in(
-                                JPAExpressions
-                                        .select(bookEntity.book_id.min())
-                                        .from(bookEntity)
-                                        .groupBy(bookEntity.isbn))
-                                .and(searchMainKeywords(bookSearchConditionDTO.getSearchMainCategory()))
-                                .and(searchSubKeywords(bookSearchConditionDTO.getSearchSubCategory()))
-                                .and(searchDetailKeywords(bookSearchConditionDTO.getSearchDetailCategory(), bookSearchConditionDTO.getSearchValue()))
+                        searchMainKeywords(bookSearchConditionDTO.getSearchMainCategory()),
+                        searchSubKeywords(bookSearchConditionDTO.getSearchSubCategory()),
+                        searchDetailKeywords(bookSearchConditionDTO.getSearchDetailCategory(), bookSearchConditionDTO.getSearchValue())
                 );
+
+//        JPAQuery<BookEntity> query =
+//                queryFactory.selectFrom(bookEntity).where(
+//                        bookEntity.book_id.in(
+//                                JPAExpressions
+//                                        .select(bookEntity.book_id.min())
+//                                        .from(bookEntity)
+//                                        .groupBy(bookEntity.isbn))
+//                                .and(searchMainKeywords(bookSearchConditionDTO.getSearchMainCategory()))
+//                                .and(searchSubKeywords(bookSearchConditionDTO.getSearchSubCategory()))
+//                                .and(searchDetailKeywords(bookSearchConditionDTO.getSearchDetailCategory(), bookSearchConditionDTO.getSearchValue()))
+//                );
 
         JPAQuery<Long> queryCount =
                 queryFactory.select(bookEntity.count()).from(bookEntity).where(
