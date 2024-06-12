@@ -31,6 +31,7 @@ public class BookRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
+
     public Page<BookEntity> findAllBySearchCondition(Pageable pageable, BookSearchConditionDTO bookSearchConditionDTO) {
 
         JPAQuery<BookEntity> query =
