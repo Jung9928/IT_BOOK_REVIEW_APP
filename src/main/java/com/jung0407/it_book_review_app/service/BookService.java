@@ -1,5 +1,6 @@
 package com.jung0407.it_book_review_app.service;
 
+import com.jung0407.it_book_review_app.configuration.CacheManagerConfig;
 import com.jung0407.it_book_review_app.model.dto.BookPaginationDTO;
 import com.jung0407.it_book_review_app.model.dto.requestDTO.BookSearchConditionDTO;
 import com.jung0407.it_book_review_app.model.dto.responseDTO.BookPagingResponseDTO;
@@ -26,7 +27,7 @@ public class BookService {
     private final BookRepositoryCustom bookRepositoryCustom;
     private final CacheManager cacheManager;
 
-    @Cacheable(value = "books", key = "#pageable.pageNumber + '-' + #pageable.pageSize + '-' + #bookSearchConditionDTO.toString()")
+    @Cacheable(value = CacheManagerConfig.CACHE_ID, key = "#pageable.pageNumber + '-' + #pageable.pageSize + '-' + #bookSearchConditionDTO.toString()")
     public BookPagingResponseDTO<List<BookResponseDTO>> getBookList(Pageable pageable, BookSearchConditionDTO bookSearchConditionDTO) {
         List<BookResponseDTO> bookResponseDTOList = new ArrayList<>();
 

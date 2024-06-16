@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,23 +23,29 @@ public class ReviewService {
     private final ReviewRepositoryCustom reviewRepositoryCustom;
 
     public ReviewPagingResponseDTO<List<ReviewResponseDTO>> getReviewList(Pageable pageable, ReviewSearchConditionDTO reviewSearchConditionDTO) {
-        List<ReviewResponseDTO> reviewResponseDTOList = new ArrayList<>();
 
         Page<ReviewEntity> reviewEntities = reviewRepositoryCustom.findAllBySearchCondition(pageable, reviewSearchConditionDTO);
 
-        reviewEntities.forEach(reviewEntity -> reviewResponseDTOList.add(ReviewResponseDTO.builder()
-                .book_id(reviewEntity.getBookId())
-                .isbn(reviewEntity.getIsbn())
-                .review_id(reviewEntity.getReview_id())
-                .review_title(reviewEntity.getReview_title())
-                .review_rating(reviewEntity.getReview_rating())
-                .reviewer(reviewEntity.getReviewer())
-                .review_date(reviewEntity.getReviewDate())
-                .review_content(reviewEntity.getReviewContent())
-                .modifiedAt(reviewEntity.getModifiedAt())
-                .review_site(reviewEntity.getReviewSite())
-                .build()
-        ));
+//        List<ReviewResponseDTO> reviewResponseDTOList = new ArrayList<>();
+//
+//        reviewEntities.forEach(reviewEntity -> reviewResponseDTOList.add(ReviewResponseDTO.builder()
+//                .book_id(reviewEntity.getBookId())
+//                .isbn(reviewEntity.getIsbn())
+//                .review_id(reviewEntity.getReview_id())
+//                .review_title(reviewEntity.getReview_title())
+//                .review_rating(reviewEntity.getReview_rating())
+//                .reviewer(reviewEntity.getReviewer())
+//                .review_date(reviewEntity.getReviewDate())
+//                .review_content(reviewEntity.getReviewContent())
+//                .modifiedAt(reviewEntity.getModifiedAt())
+//                .review_site(reviewEntity.getReviewSite())
+//                .build()
+//        ));
+
+        List<ReviewResponseDTO> reviewResponseDTOList = reviewEntities.stream()
+                .map(ReviewResponseDTO::of)
+                .collect(Collectors.toList());
+
 
         ReviewPaginationDTO reviewPaginationDTO = new ReviewPaginationDTO(
                 (int) reviewEntities.getTotalElements()
