@@ -26,12 +26,6 @@ public class BookService {
     private final BookRepositoryCustom bookRepositoryCustom;
     private final CacheManager cacheManager;
 
-//    @Cacheable(value = "books", key = "#pageable.pageNumber + '-' + #pageable.pageSize + '-' + #bookSearchConditionDTO.toString()")
-//    public List<BookEntity> getAllBookList(BookSearchConditionDTO bookSearchConditionDTO) {
-//        return bookRepositoryCustom.findAllBooks(bookSearchConditionDTO);
-//    }
-
-
     @Cacheable(value = "books", key = "#pageable.pageNumber + '-' + #pageable.pageSize + '-' + #bookSearchConditionDTO.toString()")
     public BookPagingResponseDTO<List<BookResponseDTO>> getBookList(Pageable pageable, BookSearchConditionDTO bookSearchConditionDTO) {
         List<BookResponseDTO> bookResponseDTOList = new ArrayList<>();

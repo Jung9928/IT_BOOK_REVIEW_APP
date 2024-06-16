@@ -32,8 +32,6 @@ public class BookController {
         log.info("searchSubCategory : " + bookSearchConditionDTO.getSearchSubCategory());
         log.info("searchDetailCategory : " + bookSearchConditionDTO.getSearchDetailCategory());
         log.info("searchValue : " + bookSearchConditionDTO.getSearchValue());
-//        log.info("page : " + pageable.getPageNumber());
-//        log.info("page offset : " + pageable.getOffset());
         return bookService.getBookList(pageable, bookSearchConditionDTO);
     }
 
