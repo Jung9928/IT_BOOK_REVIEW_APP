@@ -37,7 +37,7 @@ public class ForumService {
     // 게시글 목록 조회
     public ForumPagingResponseDTO<List<ForumResponseDTO>> getForumBoardList(Pageable pageable, ForumSearchConditionDTO forumSearchConditionDTO) {
 
-        List<ForumResponseDTO> generalForumResponseDTOList = new ArrayList<>();
+        List<ForumResponseDTO> forumResponseDTOList = new ArrayList<>();
 
         Page<ForumEntity> forumEntities = forumRepositoryCustom.findAllBySearchCondition(pageable, forumSearchConditionDTO);
 
@@ -52,17 +52,17 @@ public class ForumService {
                     .modifiedAt(forumEntity.getModifiedAt())
                     .build();
 
-            generalForumResponseDTOList.add(forumResponseDTO);
+            forumResponseDTOList.add(forumResponseDTO);
         }
 
-        ForumPaginationDTO generalForumPaginationDTO = new ForumPaginationDTO(
+        ForumPaginationDTO forumPaginationDTO = new ForumPaginationDTO(
                 (int)forumEntities.getTotalElements()
                 , pageable.getPageNumber() + 1
                 , pageable.getPageSize()
                 , 10
         );
 
-        return ForumPagingResponseDTO.OK(generalForumResponseDTOList, generalForumPaginationDTO);
+        return ForumPagingResponseDTO.OK(forumResponseDTOList, forumPaginationDTO);
     }
 
     // 게시글 상세 조회
@@ -134,8 +134,8 @@ public class ForumService {
        ForumEntity forumEntity = forumRepository.findById(postDeleteRequestDTO.getPostId()).orElseThrow(() ->
                 new ApplicationException(ErrorCode.POST_NOT_FOUND, String.format("%s번 게시글을 찾을 수 없습니다.", postDeleteRequestDTO.getPostId())));
 
-        // 게시글 삭제 권한 (게시글을 작성한 사람인지) 체크
-        if (forumEntity.getPassword().equals(postDeleteRequestDTO.getPassword())) {
+        // 게시글 삭제 권한 (비밀번호) 체크
+        if (!forumEntity.getPassword().equals(postDeleteRequestDTO.getPassword())) {
             throw new ApplicationException(ErrorCode.INVALID_POST_PERMISSION, String.format("해당 게시글의 비밀번호가 일치하지 않습니다."));
         }
 
@@ -151,7 +151,7 @@ public class ForumService {
                 new ApplicationException(ErrorCode.POST_NOT_FOUND, String.format("%s번 게시글을 찾을 수 없습니다.", postId)));
 
         // 게시글 수정 권한 (게시글을 작성한 사람인지) 체크
-        if (forumEntity.getPassword().equals(password)) {
+        if (!forumEntity.getPassword().equals(password)) {
             throw new ApplicationException(ErrorCode.INVALID_POST_PERMISSION, String.format("해당 게시글의 작성자가 아니므로 수정할 수 없습니다."));
         }
     }
