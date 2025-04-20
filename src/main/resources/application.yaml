@@ -1,0 +1,27 @@
+spring.application.name: IT_BOOK_REVIEW_APP
+
+## Database Configuration
+spring.datasource:
+  url: jdbc:mysql://review-app-1.chwa8qc0kmtk.ap-northeast-2.rds.amazonaws.com:3306/book_review_searcher?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+  username: jung0407
+  password: gozldWkf99!
+  driver-class-name: com.mysql.cj.jdbc.Driver
+
+# Database Configuration
+#spring.datasource:
+#  url: jdbc:mysql://localhost:3306/book_review_searcher
+#  username: root
+#  password: 1234
+#  driver-class-name: com.mysql.cj.jdbc.Driver
+
+spring.jpa:
+  show-sql: true
+  generate-ddl: true
+  hibernate.ddl-auto: update
+
+
+# delete, put ??? ??? ?? ??
+spring.mvc:
+  hidden-method:
+    filter:
+      enabled: true
