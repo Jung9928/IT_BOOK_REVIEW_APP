@@ -11,6 +11,11 @@ import java.time.Instant;
 @Entity
 @Getter
 @Setter
+//@Table(name = "reviews",
+//        indexes = {
+//            @Index(name = "idx_book_isbn_site_date", columnList = "book_id, isbn, review_site, review_date DESC")
+//        }
+//)
 @Table(name = "reviews", indexes = @Index(name = "idx_isbn", columnList = "isbn"))
 @NoArgsConstructor
 public class ReviewEntity {

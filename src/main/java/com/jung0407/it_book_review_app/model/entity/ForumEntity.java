@@ -15,7 +15,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "forum")
 public class ForumEntity {
@@ -70,5 +70,31 @@ public class ForumEntity {
         forumEntity.setPassword(password);
 
         return forumEntity;
+    }
+
+    public ForumEntity(String title, byte[] content, String nickName, String password) {
+        this.title = title;
+        this.content = content;
+        this.nickName = nickName;
+        this.password = password;
+    }
+
+    // 수정이 필요할 경우
+    public void setViewCount(int viewCount) {
+        this.viewCount = viewCount;
+    }
+
+    // 게시글 수정 시 호출
+    public void updateContent(String title, byte[] content) {
+        this.title = title;
+        this.content = content;
+
+        // 수정일 갱신
+        modifiedAt();
+    }
+
+    // 게시글 조회 시 호출
+    public void increaseViewCount() {
+        this.viewCount++;
     }
 }

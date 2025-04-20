@@ -17,7 +17,7 @@ public class ForumPagingResponseDTO<T> {
     private String resultCode;
     private String description;
     private T data;
-    private ForumPaginationDTO generalForumPaginationDTO;
+    private ForumPaginationDTO forumPaginationDTO;
 
     public static <T> ForumPagingResponseDTO<T> OK() {
         return (ForumPagingResponseDTO<T>) ForumPagingResponseDTO.builder()
@@ -37,13 +37,13 @@ public class ForumPagingResponseDTO<T> {
                 .build();
     }
 
-    public static <T> ForumPagingResponseDTO<T> OK(T data, ForumPaginationDTO generalForumPaginationDTO) {
+    public static <T> ForumPagingResponseDTO<T> OK(T data, ForumPaginationDTO forumPaginationDTO) {
         return (ForumPagingResponseDTO<T>) ForumPagingResponseDTO.builder()
                 .transactionTime(LocalDateTime.now())
                 .resultCode("OK")
                 .description("OK")
                 .data(data)
-                .generalForumPaginationDTO(generalForumPaginationDTO)
+                .forumPaginationDTO(forumPaginationDTO)
                 .build();
     }
 

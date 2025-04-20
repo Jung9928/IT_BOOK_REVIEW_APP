@@ -8,6 +8,16 @@ import lombok.*;
 @Builder
 public class ReviewPaginationDTO {
 
+//    // 페이지 당 보여지는 리뷰 최대 갯수
+//    private int pageSize;
+//
+//    // 현재 페이지
+//    int page;
+//
+//    // 다음 페이지 존재 여부 (Slice 의 hasNext())
+//    private boolean hasNextPage;
+
+
     // 페이지 당 보여지는 리뷰 최대 갯수
     private int pageSize;
 

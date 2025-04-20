@@ -27,8 +27,6 @@ public enum ErrorCode {
     ALREADY_RECOMMENDED(HttpStatus.CONFLICT, "해당 회원은 이미 게시글을 추천한 상태입니다."),
     ;
 
-
-
     private HttpStatus httpStatus;
     private String message;
 }

@@ -19,7 +19,7 @@ public class GlobalControllerAdvice {
                 .body(ResponseResultCode.error(e.getErrorCode().name()));
     }
 
-    // 어플리케이션 Runtime 중에 발생하는 예외(db crud 등등)를 핸들링하는 함수
+    // 어플리케이션 Runtime 중 발생하는 예외(db crud 등등) 핸들러
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<?> applicationHandler(RuntimeException e) {
         log.error("오류 발생 {}", e.toString());
@@ -27,13 +27,14 @@ public class GlobalControllerAdvice {
                 .body(ResponseResultCode.error(ErrorCode.INTERNAL_SERVER_ERROR.name()));
     }
 
-    // 어플리케이션 Runtime 중에 발생하는 예외(db crud 등등)를 핸들링하는 함수
+    // 어플리케이션 Runtime 중 발생하는 Spring Security 예외 핸들러
     @ExceptionHandler(SecurityException.class)
     public ResponseEntity<?> securityExceptionHandler() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ResponseResultCode.error(ErrorCode.BAD_REQUEST.name()));
     }
 
+    // 로그인 검증 과정에서 발생하는 예외 핸들러
     @ExceptionHandler(JsonProcessingException.class)
     public ResponseEntity<?> loginCheckExceptionHandler(JsonProcessingException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
